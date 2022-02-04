@@ -17,15 +17,15 @@ def main(stdscr):
     diary = Diary.load()
 
     SINGLE_COMMANDS = {
-        'g': diary.newest_day,
-        'G': diary.oldest_day,
-        'K': diary.previous_day,
-        'k': diary.previous_entry,
-        'J': diary.next_day,
-        'j': diary.next_entry,
+        "g": diary.newest_day,
+        "G": diary.oldest_day,
+        "K": diary.previous_day,
+        "k": diary.previous_entry,
+        "J": diary.next_day,
+        "j": diary.next_entry,
     }
 
-    while(True):
+    while True:
         interface.print_display(diary)
 
         c = stdscr.getkey()
@@ -33,20 +33,21 @@ def main(stdscr):
         if c in SINGLE_COMMANDS:
             SINGLE_COMMANDS[c].__call__()
         else:
-            if c == 'p':
+            if c == "p":
                 Pop.message("foo bar baz quux")
-            if c == 'd':
+            if c == "d":
                 Pop.message(diary.debug())
             # if c == curses.KEY_RESIZE:
-                # Pop.message("RESIZED")
-            if c == '?':
+            # Pop.message("RESIZED")
+            if c == "?":
                 Pop.message(help_text())
-            if c == 'q':
+            if c == "q":
                 break
             # else:
-                # Pop.message("Unrecognized command: {}".format(str(c)))
+            # Pop.message("Unrecognized command: {}".format(str(c)))
 
     Screen.stop_curses(stdscr)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(curses.wrapper(main))

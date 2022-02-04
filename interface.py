@@ -10,20 +10,20 @@ from textwrap import TextWrapper
 class Pop:
     @staticmethod
     def max_text_length():
-        return  curses.COLS - 6
-
+        return curses.COLS - 6
 
     @staticmethod
     def max_text_height():
         return curses.LINES - 4
 
-
     @classmethod
     def split_text(cls, text):
         if isinstance(text, list):
-            return text[0:cls.max_text_height()]
+            return text[0 : cls.max_text_height()]
         else:
-            return TextWrapper(width=cls.max_text_length(), max_lines=cls.max_text_height()).wrap(text)
+            return TextWrapper(
+                width=cls.max_text_length(), max_lines=cls.max_text_height()
+            ).wrap(text)
 
     @classmethod
     def text_dimensions(cls, lines):
@@ -35,9 +35,8 @@ class Pop:
         box_height = min(len(lines), cls.max_text_height())
         return [box_height + 4, max(box_width, 10)]
 
-
     @classmethod
-    def message(cls, text, color = Colors.INFO):
+    def message(cls, text, color=Colors.INFO):
         lines = cls.split_text(text)
 
         box_height, box_width = cls.text_dimensions(lines)
@@ -46,7 +45,7 @@ class Pop:
         win_left = center_x - floor(box_width / 2)
 
         win = curses.newwin(box_height, box_width, win_top, win_left)
-        win.bkgdset(' ', curses.color_pair(color.value))
+        win.bkgdset(" ", curses.color_pair(color.value))
 
         win.clear()
         win.border()
@@ -65,7 +64,6 @@ class Pop:
 
         win.refresh()
         return win.getkey()
-
 
 
 class Interface:
@@ -116,7 +114,6 @@ class Interface:
             list_idx += 1
 
         day_list.noutrefresh(0, 0, 1, 0, curses.LINES - 2, 12)
-
 
     def write_entry_panel(self, diary):
         # 24 hours x 4 15-minute increments

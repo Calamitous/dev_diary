@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Colors(Enum):
     DEFAULT = 0
     INFO = 1

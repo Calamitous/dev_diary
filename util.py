@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Util:
     @classmethod
     def today(self):

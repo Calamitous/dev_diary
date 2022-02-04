@@ -26,25 +26,19 @@ class Screen:
         curses.init_pair(4, curses.COLOR_WHITE, curses.COLOR_RED)
         curses.init_pair(5, curses.COLOR_WHITE, curses.COLOR_BLUE)
 
-
     def stop_curses(stdscr):
         curses.nocbreak()
         stdscr.keypad(False)
         curses.echo()
         curses.endwin()
 
-
     @classmethod
     def screen_center(cls):
         # Curses uses [y, x] coordinates.  Nobody knows why.
         return [floor(cls.max_y() / 2), floor(cls.max_x() / 2)]
 
-
     def max_x():
         return curses.COLS - 2
 
-
     def max_y():
         return curses.LINES - 1
-
-
