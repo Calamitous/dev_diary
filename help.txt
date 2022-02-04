@@ -1,3 +1,7 @@
+g - Navigate to top (most recent) day
+G - Navigate to bottom (oldest) day
+K - Scroll up to previous day
+k - Scroll up through entry
 J - Scroll down to next day
 j - Scroll down through entry
 ? - Display this help screen

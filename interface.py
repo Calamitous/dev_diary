@@ -75,32 +75,32 @@ class Interface:
 
     def create_header(diary):
         header_win = curses.newwin(1, curses.COLS, 0, 0)
-        header_win.bkgdset(' ', curses.color_pair(Colors.BUTTON.value))
-
-        header_text = " Dev Diary v{}".format(Config.VERSION)
-        header_win.clear()
-        header_win.addstr(0, 0, header_text)
-
+        header_win.bkgdset(" ", curses.color_pair(Colors.BUTTON.value))
         return header_win
 
+    def write_header(self):
+        header_text = " Dev Diary v{}".format(Config.VERSION)
+        self.header_win.clear()
+        self.header_win.addstr(0, 0, header_text)
+        self.header_win.noutrefresh()
 
     def create_footer(diary):
         footer_win = curses.newwin(1, curses.COLS, Screen.max_y(), 0)
-        footer_win.bkgdset(' ', curses.color_pair(Colors.BUTTON.value))
-
-        footer_text = "Press '?' for help"
-        footer_win.clear()
-        footer_win.addstr(0, 0, footer_text)
-
+        footer_win.bkgdset(" ", curses.color_pair(Colors.BUTTON.value))
         return footer_win
 
+    def write_footer(self):
+        footer_text = "Press '?' for help"
+        self.footer_win.clear()
+        self.footer_win.addstr(0, 0, footer_text)
+        self.footer_win.noutrefresh()
 
     def write_day_list(self, diary):
         line_height = max(diary.day_count() + 1, curses.LINES - 2)
 
         # 12 columns wide for the full date + 2 spaces padding
         day_list = curses.newpad(line_height, 12)
-        day_list.bkgdset(' ', curses.color_pair(Colors.INFO.value))
+        day_list.bkgdset(" ", curses.color_pair(Colors.INFO.value))
 
         day_list.clear()
 
@@ -122,8 +122,10 @@ class Interface:
 
         # Remaining width of screen wide by the max length
         body_pad = curses.newpad(body_height, curses.COLS - 12)
-        body_pad.bkgdset(' ', curses.color_pair(Colors.DEFAULT.value))
-        body_pad.clear()
+        body_pad.bkgdset(" ", curses.color_pair(Colors.DEFAULT.value))
+
+        # Why isn't this working?
+        # body_pad.clear()
 
         body_idx = 0
         for entry in diary.selected_day_entries():
@@ -142,12 +144,12 @@ class Interface:
 
     def print_display(self, diary):
         curses.update_lines_cols()
-        # self.stdscr.clear()
+        self.stdscr.clear()
         # TODO: START: Figure out this refresh nonsense
         self.stdscr.refresh()
 
-        self.header_win.noutrefresh()
-        self.footer_win.noutrefresh()
+        self.write_header()
+        self.write_footer()
 
         self.write_day_list(diary)
         self.write_entry_panel(diary)
