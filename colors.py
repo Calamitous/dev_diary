@@ -8,3 +8,4 @@ class Colors(Enum):
     ERROR = 3
     FATAL = 4
     BUTTON = 5
+    TIME = 6

@@ -3,6 +3,7 @@ import curses
 from colors import Colors
 from config import Config
 from screen import Screen
+from util import Util
 from math import floor, ceil
 from textwrap import TextWrapper
 
@@ -116,31 +117,45 @@ class Interface:
         day_list.noutrefresh(0, 0, 1, 0, curses.LINES - 2, 12)
 
     def write_entry_panel(self, diary):
+        # TODO: Figure out how to show empty days
+
+        lines = diary.lines()
         # 24 hours x 4 15-minute increments
         # max theoretical body height = 24 * 4 + 1
-        body_height = diary.entry_line_count()
+        body_height = len(lines)
 
         # Remaining width of screen wide by the max length
         body_pad = curses.newpad(body_height, curses.COLS - 12)
         body_pad.bkgdset(" ", curses.color_pair(Colors.DEFAULT.value))
 
-        # Why isn't this working?
-        # body_pad.clear()
+        body_pad.clear()
 
         body_idx = 0
-        for entry in diary.selected_day_entries():
+        for line in lines:
+            display_time = " {} ".format(line["time"])
+            display_line = line["text"]
+
             body_pad.move(body_idx, 0)
-
-            display_line = str(entry)
-
-            if entry == diary.selected_entry():
+            if line["selected"]:
+                # Pad line?
+                body_pad.addstr(
+                    display_time,
+                    curses.color_pair(Colors.TIME.value) + curses.A_REVERSE,
+                )
+                body_pad.move(body_idx, 7)
                 body_pad.addstr(display_line, curses.A_REVERSE)
             else:
+                body_pad.addstr(display_time, curses.color_pair(Colors.TIME.value))
+                body_pad.move(body_idx, 7)
                 body_pad.addstr(display_line)
 
             body_idx += 1
 
-        body_pad.noutrefresh(0, 0, 1, 12, curses.LINES - 2, curses.COLS - 12)
+        start_index = min(
+            Config.start_time_index(),
+            Util.time_string_to_index(diary.earliest_time_for_selected_day()),
+        )
+        body_pad.noutrefresh(start_index, 0, 1, 12, curses.LINES - 2, curses.COLS - 12)
 
     def print_display(self, diary):
         curses.update_lines_cols()

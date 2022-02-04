@@ -25,6 +25,7 @@ class Screen:
         curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_RED)
         curses.init_pair(4, curses.COLOR_WHITE, curses.COLOR_RED)
         curses.init_pair(5, curses.COLOR_WHITE, curses.COLOR_BLUE)
+        curses.init_pair(6, curses.COLOR_BLACK, curses.COLOR_GREEN)
 
     def stop_curses(stdscr):
         curses.nocbreak()

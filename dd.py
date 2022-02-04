@@ -41,6 +41,8 @@ def main(stdscr):
             # Pop.message("RESIZED")
             if c == "?":
                 Pop.message(help_text())
+            # if c == curses.KEY_DOWN:
+            # diary.next_day
             if c == "q":
                 break
             # else:

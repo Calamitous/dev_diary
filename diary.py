@@ -20,7 +20,7 @@ class Diary:
 
     @classmethod
     def create_file(self):
-        first_entry = {Util.today(): ["test"]}
+        first_entry = {Util.today(): []}
         with open(self.FILENAME, "w") as diary_file:
             diary_file.write(json.dumps(first_entry))
 
@@ -28,6 +28,53 @@ class Diary:
         self.days = days
         self.selected_day_index = 0
         self.selected_entry_index = 0
+
+    def is_selected_entry(self, hour, quarter, time_string):
+        entry = self.selected_entry()
+
+        if entry is None:
+            return False
+
+        if time_string == entry["start"]:
+            return True
+
+        test_time = (hour * 1000) + (quarter * 250)
+
+        quarter_dict = {"00": 0, "15": 250, "30": 500, "45": 750}
+
+        entry_hour, entry_quarter = entry["start"].split(":")
+        entry_hour = int(entry_hour)
+        entry_quarter = quarter_dict[entry_quarter]
+        entry_duration = entry["duration"] * 250
+
+        entry_start_time = (entry_hour * 1000) + entry_quarter
+        entry_end_time = entry_start_time + entry_duration - 1
+
+        return entry_start_time <= test_time and entry_end_time >= test_time
+
+    def lines(self):
+        entries = self.selected_day_entries()
+        line_values = []
+
+        for hour in range(0, 23):
+            hour_string = "0{}".format(hour)[-2:]
+            for quarter in range(0, 4):
+                minute_string = "0{}".format(quarter * 15)[-2:]
+                time_string = "{}:{}".format(hour_string, minute_string)
+
+                data = [entry for entry in entries if time_string == entry["start"]]
+                current_entry_selection = self.is_selected_entry(
+                    hour, quarter, time_string
+                )
+
+                new_line = {
+                    "time": time_string,
+                    "text": str(data),
+                    "selected": current_entry_selection,
+                }
+                line_values.append(new_line)
+
+        return line_values
 
     def debug(self):
         return str(self.selected_day_entries())
@@ -45,14 +92,24 @@ class Diary:
     def selected_date(self):
         return self.entry_dates()[self.selected_day_index]
 
-    def entry_lines(self):
-        return self.days[self.selected_date()][self.selected_entry_index]
-
     def selected_day_entries(self):
         return self.days[self.selected_date()]
 
     def selected_entry(self):
+        if len(self.selected_day_entries()) == 0:
+            return None
+
         return self.days[self.selected_date()][self.selected_entry_index]
+
+    def earliest_time_for_selected_day(self):
+        entries = self.selected_day_entries()
+
+        # If there are no entries, return EOD so that body_pad scrolls to default BOD
+        # Basically, day never started
+        if len(entries) == 0:
+            return "23:45"
+
+        return min([entry["start"] for entry in entries])
 
     def next_day(self):
         if self.selected_day_index < self.max_day_index():
