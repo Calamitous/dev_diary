@@ -5,7 +5,6 @@ from diary import Diary
 from help import help_text
 from interface import Interface, Pop
 from screen import Screen
-from util import Util
 
 
 def main(stdscr):

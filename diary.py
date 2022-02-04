@@ -3,6 +3,8 @@ import json
 from os.path import exists
 from pathlib import Path
 
+from util import Util
+
 class Diary:
     FILENAME = './dev_diary.json'
 
@@ -19,7 +21,7 @@ class Diary:
 
     @classmethod
     def create_file(self):
-        first_entry = {Util.today(): {}}
+        first_entry = {Util.today(): ["test"]}
         with open(self.FILENAME, "w") as diary_file:
             diary_file.write(json.dumps(first_entry))
 
