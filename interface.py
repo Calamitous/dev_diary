@@ -46,7 +46,7 @@ class Pop:
         win_left = center_x - floor(box_width / 2)
 
         win = curses.newwin(box_height, box_width, win_top, win_left)
-        win.bkgdset(" ", curses.color_pair(color.value))
+        win.bkgdset(" ", curses.color_pair(color))
 
         win.clear()
         win.border()
@@ -61,7 +61,7 @@ class Pop:
         # Display button
         button_text = " < OK > "
         win.move(box_height - 1, ceil(box_width / 2) - ceil(len(button_text) / 2))
-        win.addstr(button_text, curses.color_pair(Colors.BUTTON.value))
+        win.addstr(button_text, curses.color_pair(Colors.BUTTON))
 
         win.refresh()
         return win.getkey()
@@ -76,7 +76,7 @@ class Interface:
 
     def create_header(diary):
         header_win = curses.newwin(1, curses.COLS, 0, 0)
-        header_win.bkgdset(" ", curses.color_pair(Colors.BUTTON.value))
+        header_win.bkgdset(" ", curses.color_pair(Colors.BUTTON))
         return header_win
 
     def write_header(self):
@@ -87,7 +87,7 @@ class Interface:
 
     def create_footer(diary):
         footer_win = curses.newwin(1, curses.COLS, Screen.max_y(), 0)
-        footer_win.bkgdset(" ", curses.color_pair(Colors.BUTTON.value))
+        footer_win.bkgdset(" ", curses.color_pair(Colors.BUTTON))
         return footer_win
 
     def write_footer(self):
@@ -101,7 +101,7 @@ class Interface:
 
         # 12 columns wide for the full date + 2 spaces padding
         day_list = curses.newpad(line_height, 12)
-        day_list.bkgdset(" ", curses.color_pair(Colors.INFO.value))
+        day_list.bkgdset(" ", curses.color_pair(Colors.INFO))
 
         day_list.clear()
 
@@ -116,6 +116,20 @@ class Interface:
 
         day_list.noutrefresh(0, 0, 1, 0, curses.LINES - 2, 12)
 
+    @classmethod
+    def pad_line(cls, text):
+        max = cls.max_entry_width()
+        if len(text) > max:
+            text = text[: (max - 4)] + "..."
+
+        text = (text + (" " * max))[: max - 1]
+        return text
+
+    @classmethod
+    def max_entry_width(cls):
+        # Width - Date column - Time column
+        return curses.COLS - 12 - 7
+
     def write_entry_panel(self, diary):
         # TODO: Figure out how to show empty days
 
@@ -126,28 +140,35 @@ class Interface:
 
         # Remaining width of screen wide by the max length
         body_pad = curses.newpad(body_height, curses.COLS - 12)
-        body_pad.bkgdset(" ", curses.color_pair(Colors.DEFAULT.value))
+        body_pad.bkgdset(" ", curses.color_pair(Colors.DEFAULT))
 
         body_pad.clear()
 
         body_idx = 0
         for line in lines:
             display_time = " {} ".format(line["time"])
-            display_line = line["text"]
+            display_line = self.pad_line(line["text"])
 
             body_pad.move(body_idx, 0)
+            # if display_time == " 10:45 ":
+            # Pop.message("'{}'".format(display_line))
+
             if line["selected"]:
-                # Pad line?
                 body_pad.addstr(
                     display_time,
-                    curses.color_pair(Colors.TIME.value) + curses.A_REVERSE,
+                    curses.color_pair(Colors.TIME) + curses.A_REVERSE,
                 )
                 body_pad.move(body_idx, 7)
-                body_pad.addstr(display_line, curses.A_REVERSE)
+                body_pad.addstr(
+                    display_line,
+                    curses.color_pair(Colors.ENTRIES[line["type"]]) + curses.A_REVERSE,
+                )
             else:
-                body_pad.addstr(display_time, curses.color_pair(Colors.TIME.value))
+                body_pad.addstr(display_time, curses.color_pair(Colors.TIME))
                 body_pad.move(body_idx, 7)
-                body_pad.addstr(display_line)
+                body_pad.addstr(
+                    display_line, curses.color_pair(Colors.ENTRIES[line["type"]])
+                )
 
             body_idx += 1
 
@@ -155,7 +176,7 @@ class Interface:
             Config.start_time_index(),
             Util.time_string_to_index(diary.earliest_time_for_selected_day()),
         )
-        body_pad.noutrefresh(start_index, 0, 1, 12, curses.LINES - 2, curses.COLS - 12)
+        body_pad.noutrefresh(start_index, 0, 1, 12, curses.LINES - 2, curses.COLS)
 
     def print_display(self, diary):
         curses.update_lines_cols()

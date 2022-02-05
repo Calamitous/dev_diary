@@ -1,5 +1,6 @@
 import curses
-import curses.textpad
+
+from colors import Colors
 
 from math import floor, ceil
 
@@ -20,12 +21,7 @@ class Screen:
         curses.curs_set(0)
         curses.use_default_colors()
 
-        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_CYAN)
-        curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_YELLOW)
-        curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_RED)
-        curses.init_pair(4, curses.COLOR_WHITE, curses.COLOR_RED)
-        curses.init_pair(5, curses.COLOR_WHITE, curses.COLOR_BLUE)
-        curses.init_pair(6, curses.COLOR_BLACK, curses.COLOR_GREEN)
+        Colors.initialize_color_pairs()
 
     def stop_curses(stdscr):
         curses.nocbreak()

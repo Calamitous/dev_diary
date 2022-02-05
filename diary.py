@@ -29,9 +29,7 @@ class Diary:
         self.selected_day_index = 0
         self.selected_entry_index = 0
 
-    def is_selected_entry(self, hour, quarter, time_string):
-        entry = self.selected_entry()
-
+    def line_is_entry(self, hour, quarter, time_string, entry):
         if entry is None:
             return False
 
@@ -52,9 +50,30 @@ class Diary:
 
         return entry_start_time <= test_time and entry_end_time >= test_time
 
-    def lines(self):
+    def line_is_selected_entry(self, hour, quarter, time_string):
+        entry = self.selected_entry()
+        return self.line_is_entry(hour, quarter, time_string, entry)
+
+    def entry_for_line(self, hour, quarter, time_string):
         entries = self.selected_day_entries()
+        data = [entry for entry in entries if time_string == entry["start"]]
+        if len(data) == 1:
+            return data[0]
+
+        data = [
+            entry
+            for entry in entries
+            if self.line_is_entry(hour, quarter, time_string, entry)
+        ]
+        if len(data) == 1:
+            return {"text": "", "type": data[0]["type"]}
+
+        return {"text": "", "type": "empty"}
+
+    def lines(self):
         line_values = []
+
+        type = "empty"
 
         for hour in range(0, 23):
             hour_string = "0{}".format(hour)[-2:]
@@ -62,14 +81,16 @@ class Diary:
                 minute_string = "0{}".format(quarter * 15)[-2:]
                 time_string = "{}:{}".format(hour_string, minute_string)
 
-                data = [entry for entry in entries if time_string == entry["start"]]
-                current_entry_selection = self.is_selected_entry(
+                entry = self.entry_for_line(hour, quarter, time_string)
+
+                current_entry_selection = self.line_is_selected_entry(
                     hour, quarter, time_string
                 )
 
                 new_line = {
                     "time": time_string,
-                    "text": str(data),
+                    "text": entry["text"],
+                    "type": entry["type"],
                     "selected": current_entry_selection,
                 }
                 line_values.append(new_line)
