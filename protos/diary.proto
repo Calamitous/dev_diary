@@ -1,12 +1,12 @@
 syntax = "proto3"
 
 enum EntryType {
-  Meeting = 0;
-  Pairing = 1;
-  Solo = 2;
-  Downtime = 3;
-  Adminitrivia = 4;
-  Other = 5;
+  MEETING = 0;
+  PAIRING = 1;
+  SOLO = 2;
+  DOWNTIME = 3;
+  ADMINITRIVIA = 4;
+  OTHER = 5;
 }
 
 message Entry {
