@@ -1,0 +1,33 @@
+syntax = "proto3"
+
+enum EntryType {
+  Meeting = 0;
+  Pairing = 1;
+  Solo = 2;
+  Downtime = 3;
+  Adminitrivia = 4;
+  Other = 5;
+}
+
+message Entry {
+  string start = 1;
+  int32 duration = 2;
+  EntryType type = 3;
+  string text = 4;
+}
+
+message Day {
+  string date = 0;
+  repeated Entry entries = 1;
+}
+
+message Config {
+  string diary_filename = 0;
+  string file_version = 1;
+  string start_time = 2;
+}
+
+message Diary {
+  repeated Day days = 0;
+  Config config = 1;
+}

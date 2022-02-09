@@ -1,0 +1,2 @@
+* Use protobufs instead of JSON
+* Break Diary into Diary -> [Day] -> [Entry]
