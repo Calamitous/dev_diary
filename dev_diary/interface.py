@@ -1,11 +1,12 @@
 import curses
 
-from colors import Colors
-from config import Config
-from screen import Screen
-from util import Util
 from math import floor, ceil
 from textwrap import TextWrapper
+
+from dev_diary.colors import Colors
+from dev_diary.config import Config
+from dev_diary.screen import Screen
+from dev_diary.util import Util
 
 
 class Pop:

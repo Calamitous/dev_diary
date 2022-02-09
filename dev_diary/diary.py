@@ -3,8 +3,8 @@ import json
 from os.path import exists
 from pathlib import Path
 
-from util import Util
-from entry import Entry
+from dev_diary.util import Util
+from dev_diary.entry import Entry
 
 
 class Diary:
@@ -13,8 +13,9 @@ class Diary:
     @classmethod
     def load(self):
         raw_entries = json.load(open(self.FILENAME))
-        entries = [Entry(entry) for entry in raw_entries]
-        print(entries)
+        # TODO: This
+        # entries = [Entry(entry) for entry in raw_entries]
+        # print(entries)
         return self(raw_entries)
 
     @classmethod

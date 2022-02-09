@@ -1,10 +1,10 @@
 import curses
 import sys
 
-from diary import Diary
-from help import help_text
-from interface import Interface, Pop
-from screen import Screen
+from dev_diary.diary import Diary
+from dev_diary.help import help_text
+from dev_diary.interface import Interface, Pop
+from dev_diary.screen import Screen
 
 
 def main(stdscr):

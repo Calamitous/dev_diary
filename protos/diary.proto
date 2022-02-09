@@ -1,4 +1,4 @@
-syntax = "proto3"
+syntax = "proto3";
 
 enum EntryType {
   MEETING = 0;
@@ -17,17 +17,17 @@ message Entry {
 }
 
 message Day {
-  string date = 0;
-  repeated Entry entries = 1;
+  string date = 1;
+  repeated Entry entries = 2;
 }
 
 message Config {
-  string diary_filename = 0;
-  string file_version = 1;
-  string start_time = 2;
+  string diary_filename = 1;
+  string file_version = 2;
+  string start_time = 3;
 }
 
 message Diary {
-  repeated Day days = 0;
-  Config config = 1;
+  repeated Day days = 1;
+  Config config = 2;
 }

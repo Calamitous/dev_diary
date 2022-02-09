@@ -1,6 +1,6 @@
 import curses
 
-from colors import Colors
+from dev_diary.colors import Colors
 
 from math import floor, ceil
 

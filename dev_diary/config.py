@@ -1,4 +1,4 @@
-from util import Util
+from dev_diary.util import Util
 
 
 class Config:
