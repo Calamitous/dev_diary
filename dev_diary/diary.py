@@ -13,6 +13,7 @@ import dev_diary.protos.diary_pb2 as diary_pb
 
 from dev_diary.debug import log
 
+
 class Diary:
     if len(sys.argv) >= 2:
         FILENAME = sys.argv[1]
@@ -25,7 +26,7 @@ class Diary:
         # TODO: This
         # entries = [Entry(entry) for entry in raw_entries]
         # print(entries)
-        return self(raw_entries)
+        return self({"days": raw_entries, "config": Config.raw()})
 
     @classmethod
     def is_file_missing(cls):
@@ -37,15 +38,17 @@ class Diary:
         with open(self.FILENAME, "w") as diary_file:
             diary_file.write(json.dumps(first_entry))
 
-    def __init__(self, days={}):
-        self.days = days
+    def __init__(self, diary_dict={"days": {}, "config": {}}):
+        # log(diary_dict)
+        self.days = diary_dict["days"]
+        self.config = diary_dict["config"]
         self.selected_day_index = 0
         self.selected_entry_index = 0
 
     def to_pb(self):
         diary_pb_data = diary_pb.Diary()
 
-        diary_pb_data.config.CopyFrom(Config().to_pb())
+        diary_pb_data.config.CopyFrom(Config.c_to_pb())
 
         days_struct = [{"date": date, "entries": self.days[date]} for date in self.days]
         days_pb = [Day(day).to_pb() for day in days_struct]
@@ -56,6 +59,20 @@ class Diary:
 
     def to_pb_str(self):
         return self.to_pb().SerializeToString()
+
+    @classmethod
+    def from_pb(cls, diary_pb):
+        diary_dict = {
+            "config": Config.from_pb(diary_pb.config),
+            "entries": [Day.from_pb(day) for day in diary_pb.days],
+        }
+
+        return cls(diary_dict)
+
+    # TODO
+    def __repr__(self):
+        fmt_str = "Diary:\n  config:\n    {}\n  days:\n    {}"
+        return fmt_str.format(self.config, self.days)
 
     def write(self):
         with open("dump.p", "wb") as dump:

@@ -20,3 +20,16 @@ class Day:
 
     def to_pb_str(self):
         return self.to_pb().SerializeToString()
+
+    @classmethod
+    def from_pb(cls, day_pb):
+        day_dict = {
+            "date": day_pb.date,
+            "entries": [Entry.from_pb(entry) for entry in day_pb.entries],
+        }
+
+        return cls(day_dict)
+
+    def __repr__(self):
+        fmt_str = "Day:\n  date: {}\n  entries:\n    {}"
+        return fmt_str.format(self.date, self.entries)

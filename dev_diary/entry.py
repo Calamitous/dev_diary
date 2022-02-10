@@ -29,3 +29,18 @@ class Entry:
 
     def to_pb_str(self):
         return self.to_pb().SerializeToString()
+
+    @classmethod
+    def from_pb(cls, entry_pb):
+        entry_dict = {
+            "start": entry_pb.start,
+            "duration": entry_pb.duration,
+            "activity": entry_pb.activity,
+            "text": entry_pb.text,
+        }
+
+        return cls(entry_dict)
+
+    def __repr__(self):
+        fmt_str = "Entry:\n  start: {}\n  duration: {}\n  activity: {}\n  text: {}"
+        return fmt_str.format(self.start, self.duration, self.activity, self.text)
