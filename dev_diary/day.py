@@ -5,9 +5,9 @@ from dev_diary.entry import Entry, Activity
 
 
 class Day:
-    def __init__(self, day_dict):
-        self.date = day_dict["date"]
-        self.entries = day_dict["entries"]
+    def __init__(self, date, entries):
+        self.date = date
+        self.entries = entries
         self.selected_entry_index = 0
 
     def quarter_to_index(hour, quarter, time_string):
@@ -15,12 +15,7 @@ class Day:
 
     @classmethod
     def create_today(cls):
-        day_dict = {
-            "date": Util.today(),
-            "entries": [],
-        }
-
-        return Day(day_dict)
+        return Day(Util.today(), [])
 
     def line_is_selected_entry(self, hour, quarter, time_string):
         if len(self.entries) == 0:
@@ -35,6 +30,7 @@ class Day:
 
         return self.entries[self.selected_entry_index]
 
+    # TODO: Refactor this
     def lines(self):
         line_values = []
 
@@ -103,12 +99,8 @@ class Day:
 
     @classmethod
     def from_pb(cls, day_pb):
-        day_dict = {
-            "date": day_pb.date,
-            "entries": [Entry.from_pb(entry) for entry in day_pb.entries],
-        }
-
-        return cls(day_dict)
+        entries = [Entry.from_pb(entry) for entry in day_pb.entries]
+        return cls(day_pb.date, entries)
 
     def __repr__(self):
         fmt_str = "\nDay:\n  date: {}\n  entries:\n    {}"

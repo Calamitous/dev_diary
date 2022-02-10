@@ -22,7 +22,7 @@ class Diary:
 
     @classmethod
     def create_file(self):
-        fresh_diary = Diary(Config.raw(), [Day.create_today()]).to_pb_str()
+        fresh_diary = Diary(Config.default(), [Day.create_today()]).to_pb_str()
 
         with open(self.FILENAME, "wb") as diary_file:
             diary_file.write(fresh_diary)

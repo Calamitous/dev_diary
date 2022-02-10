@@ -15,11 +15,11 @@ ActivityNames = list(Activity.keys())
 
 
 class Entry:
-    def __init__(self, entry_dict):
-        self.start = entry_dict["start"]
-        self.duration = entry_dict["duration"]
-        self.activity = entry_dict["activity"]
-        self.text = entry_dict["text"]
+    def __init__(self, start, duration, activity, text):
+        self.start = start
+        self.duration = duration
+        self.activity = activity
+        self.text = text
 
     def activity_name(self):
         return ActivityNames[self.activity]
@@ -34,6 +34,7 @@ class Entry:
 
         return entry_pb
 
+    # TODO: Refactor all this
     def line_is_entry(self, hour, quarter, time_string):
         if time_string == self.start:
             return True
@@ -61,25 +62,11 @@ class Entry:
 
     @classmethod
     def activity_line(cls, activity_string):
-        entry_dict = {
-            "start": "",
-            "duration": 0,
-            "activity": Activity[activity_string],
-            "text": "",
-        }
-
-        return cls(entry_dict)
+        return cls("", 0, Activity[activity_string], "")
 
     @classmethod
     def from_pb(cls, entry_pb):
-        entry_dict = {
-            "start": entry_pb.start,
-            "duration": entry_pb.duration,
-            "activity": entry_pb.activity,
-            "text": entry_pb.text,
-        }
-
-        return cls(entry_dict)
+        return cls(entry_pb.start, entry_pb.duration, entry_pb.activity, entry_pb.text,)
 
     def __repr__(self):
         fmt_str = "\nEntry:\n  start: {}\n  duration: {}\n  activity: {}\n  text: {}"
