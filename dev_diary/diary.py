@@ -6,6 +6,7 @@ from pathlib import Path
 
 from dev_diary.util import Util
 from dev_diary.entry import Entry
+from dev_diary.day import Day
 
 # from dev_diary.protos.diary import diary_pb
 
@@ -41,9 +42,12 @@ class Diary:
 
     def write(self):
         # pb_days = [diary_pb.Day()day for day in self.days]
-        entries = [Entry(entry).to_pb() for entry in self.selected_day_entries()]
+        days_struct = [{"date": date, "entries": self.days[date]} for date in self.days]
+        days_pb = [Day(day).to_pb() for day in days_struct]
+
+        # entries = [Entry(entry).to_pb() for entry in self.selected_day_entries()]
         with open("dump.p", "wb") as dump:
-            dump.write(entries[0])
+            dump.write(days_pb[0])
 
     def line_is_entry(self, hour, quarter, time_string, entry):
         if entry is None:

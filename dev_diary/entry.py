@@ -25,4 +25,7 @@ class Entry:
         entry_pb.activity = Activity[self.activity]
         entry_pb.text = self.text
 
-        return entry_pb.SerializeToString()
+        return entry_pb
+
+    def to_pb_str(self):
+        return self.to_pb().SerializeToString()
