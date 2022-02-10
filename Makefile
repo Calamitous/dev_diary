@@ -5,7 +5,7 @@ run:
 	python -m dev_diary
 
 run-testfile:
-	python -m dev_diary dev_diary.json
+	python -m dev_diary ./dev.diary
 
 build:
 	make init
