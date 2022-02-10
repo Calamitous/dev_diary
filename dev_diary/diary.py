@@ -1,3 +1,4 @@
+import sys
 import json
 
 from os.path import exists
@@ -6,9 +7,14 @@ from pathlib import Path
 from dev_diary.util import Util
 from dev_diary.entry import Entry
 
+# from dev_diary.protos.diary import diary_pb
+
 
 class Diary:
-    FILENAME = "./dev_diary.json"
+    if len(sys.argv) >= 2:
+        FILENAME = sys.argv[1]
+    else:
+        FILENAME = "./dev_diary.json"
 
     @classmethod
     def load(self):
@@ -32,6 +38,12 @@ class Diary:
         self.days = days
         self.selected_day_index = 0
         self.selected_entry_index = 0
+
+    def write(self):
+        # pb_days = [diary_pb.Day()day for day in self.days]
+        entries = [Entry(entry).to_pb() for entry in self.selected_day_entries()]
+        with open("dump.p", "wb") as dump:
+            dump.write(entries[0])
 
     def line_is_entry(self, hour, quarter, time_string, entry):
         if entry is None:
@@ -70,14 +82,14 @@ class Diary:
             if self.line_is_entry(hour, quarter, time_string, entry)
         ]
         if len(data) == 1:
-            return {"text": "", "type": data[0]["type"]}
+            return {"text": "", "activity": data[0]["activity"]}
 
-        return {"text": "", "type": "empty"}
+        return {"text": "", "activity": "empty"}
 
     def lines(self):
         line_values = []
 
-        type = "empty"
+        activity = "empty"
 
         for hour in range(0, 23):
             hour_string = "0{}".format(hour)[-2:]
@@ -94,7 +106,7 @@ class Diary:
                 new_line = {
                     "time": time_string,
                     "text": entry["text"],
-                    "type": entry["type"],
+                    "activity": entry["activity"],
                     "selected": current_entry_selection,
                 }
                 line_values.append(new_line)

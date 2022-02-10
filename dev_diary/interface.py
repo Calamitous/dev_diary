@@ -162,13 +162,14 @@ class Interface:
                 body_pad.move(body_idx, 7)
                 body_pad.addstr(
                     display_line,
-                    curses.color_pair(Colors.ENTRIES[line["type"]]) + curses.A_REVERSE,
+                    curses.color_pair(Colors.ENTRIES[line["activity"]])
+                    + curses.A_REVERSE,
                 )
             else:
                 body_pad.addstr(display_time, curses.color_pair(Colors.TIME))
                 body_pad.move(body_idx, 7)
                 body_pad.addstr(
-                    display_line, curses.color_pair(Colors.ENTRIES[line["type"]])
+                    display_line, curses.color_pair(Colors.ENTRIES[line["activity"]])
                 )
 
             body_idx += 1

@@ -8,68 +8,86 @@ from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x12protos/diary.proto"S\n\x05\x45ntry\x12\r\n\x05start\x18\x01 \x01(\t\x12\x10\n\x08\x64uration\x18\x02 \x01(\x05\x12\x1b\n\x08\x61\x63tivity\x18\x03 \x01(\x0e\x32\t.Activity\x12\x0c\n\x04text\x18\x04 \x01(\t",\n\x03\x44\x61y\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x17\n\x07\x65ntries\x18\x02 \x03(\x0b\x32\x06.Entry"K\n\x06\x43onfig\x12\x17\n\x0f\x64iary_file_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_version\x18\x02 \x01(\t\x12\x12\n\nstart_time\x18\x03 \x01(\t"4\n\x05\x44iary\x12\x12\n\x04\x64\x61ys\x18\x01 \x03(\x0b\x32\x04.Day\x12\x17\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x07.Config*d\n\x08\x41\x63tivity\x12\x0b\n\x07MEETING\x10\x00\x12\x0b\n\x07PAIRING\x10\x01\x12\x08\n\x04SOLO\x10\x02\x12\x0c\n\x08\x44OWNTIME\x10\x03\x12\x10\n\x0c\x41\x44MINITRIVIA\x10\x04\x12\t\n\x05\x45MPTY\x10\x05\x12\t\n\x05OTHER\x10\x06\x62\x06proto3'
+)
 
-
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12protos/diary.proto\"P\n\x05\x45ntry\x12\r\n\x05start\x18\x01 \x01(\t\x12\x10\n\x08\x64uration\x18\x02 \x01(\x05\x12\x18\n\x04type\x18\x03 \x01(\x0e\x32\n.EntryType\x12\x0c\n\x04text\x18\x04 \x01(\t\",\n\x03\x44\x61y\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x17\n\x07\x65ntries\x18\x02 \x03(\x0b\x32\x06.Entry\"J\n\x06\x43onfig\x12\x16\n\x0e\x64iary_filename\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_version\x18\x02 \x01(\t\x12\x12\n\nstart_time\x18\x03 \x01(\t\"4\n\x05\x44iary\x12\x12\n\x04\x64\x61ys\x18\x01 \x03(\x0b\x32\x04.Day\x12\x17\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x07.Config*Z\n\tEntryType\x12\x0b\n\x07MEETING\x10\x00\x12\x0b\n\x07PAIRING\x10\x01\x12\x08\n\x04SOLO\x10\x02\x12\x0c\n\x08\x44OWNTIME\x10\x03\x12\x10\n\x0c\x41\x44MINITRIVIA\x10\x04\x12\t\n\x05OTHER\x10\x05\x62\x06proto3')
-
-_ENTRYTYPE = DESCRIPTOR.enum_types_by_name['EntryType']
-EntryType = enum_type_wrapper.EnumTypeWrapper(_ENTRYTYPE)
+_ACTIVITY = DESCRIPTOR.enum_types_by_name["Activity"]
+Activity = enum_type_wrapper.EnumTypeWrapper(_ACTIVITY)
 MEETING = 0
 PAIRING = 1
 SOLO = 2
 DOWNTIME = 3
 ADMINITRIVIA = 4
-OTHER = 5
+EMPTY = 5
+OTHER = 6
 
 
-_ENTRY = DESCRIPTOR.message_types_by_name['Entry']
-_DAY = DESCRIPTOR.message_types_by_name['Day']
-_CONFIG = DESCRIPTOR.message_types_by_name['Config']
-_DIARY = DESCRIPTOR.message_types_by_name['Diary']
-Entry = _reflection.GeneratedProtocolMessageType('Entry', (_message.Message,), {
-  'DESCRIPTOR' : _ENTRY,
-  '__module__' : 'protos.diary_pb2'
-  # @@protoc_insertion_point(class_scope:Entry)
-  })
+_ENTRY = DESCRIPTOR.message_types_by_name["Entry"]
+_DAY = DESCRIPTOR.message_types_by_name["Day"]
+_CONFIG = DESCRIPTOR.message_types_by_name["Config"]
+_DIARY = DESCRIPTOR.message_types_by_name["Diary"]
+Entry = _reflection.GeneratedProtocolMessageType(
+    "Entry",
+    (_message.Message,),
+    {
+        "DESCRIPTOR": _ENTRY,
+        "__module__": "protos.diary_pb2"
+        # @@protoc_insertion_point(class_scope:Entry)
+    },
+)
 _sym_db.RegisterMessage(Entry)
 
-Day = _reflection.GeneratedProtocolMessageType('Day', (_message.Message,), {
-  'DESCRIPTOR' : _DAY,
-  '__module__' : 'protos.diary_pb2'
-  # @@protoc_insertion_point(class_scope:Day)
-  })
+Day = _reflection.GeneratedProtocolMessageType(
+    "Day",
+    (_message.Message,),
+    {
+        "DESCRIPTOR": _DAY,
+        "__module__": "protos.diary_pb2"
+        # @@protoc_insertion_point(class_scope:Day)
+    },
+)
 _sym_db.RegisterMessage(Day)
 
-Config = _reflection.GeneratedProtocolMessageType('Config', (_message.Message,), {
-  'DESCRIPTOR' : _CONFIG,
-  '__module__' : 'protos.diary_pb2'
-  # @@protoc_insertion_point(class_scope:Config)
-  })
+Config = _reflection.GeneratedProtocolMessageType(
+    "Config",
+    (_message.Message,),
+    {
+        "DESCRIPTOR": _CONFIG,
+        "__module__": "protos.diary_pb2"
+        # @@protoc_insertion_point(class_scope:Config)
+    },
+)
 _sym_db.RegisterMessage(Config)
 
-Diary = _reflection.GeneratedProtocolMessageType('Diary', (_message.Message,), {
-  'DESCRIPTOR' : _DIARY,
-  '__module__' : 'protos.diary_pb2'
-  # @@protoc_insertion_point(class_scope:Diary)
-  })
+Diary = _reflection.GeneratedProtocolMessageType(
+    "Diary",
+    (_message.Message,),
+    {
+        "DESCRIPTOR": _DIARY,
+        "__module__": "protos.diary_pb2"
+        # @@protoc_insertion_point(class_scope:Diary)
+    },
+)
 _sym_db.RegisterMessage(Diary)
 
 if _descriptor._USE_C_DESCRIPTORS == False:
 
-  DESCRIPTOR._options = None
-  _ENTRYTYPE._serialized_start=280
-  _ENTRYTYPE._serialized_end=370
-  _ENTRY._serialized_start=22
-  _ENTRY._serialized_end=102
-  _DAY._serialized_start=104
-  _DAY._serialized_end=148
-  _CONFIG._serialized_start=150
-  _CONFIG._serialized_end=224
-  _DIARY._serialized_start=226
-  _DIARY._serialized_end=278
+    DESCRIPTOR._options = None
+    _ACTIVITY._serialized_start = 284
+    _ACTIVITY._serialized_end = 384
+    _ENTRY._serialized_start = 22
+    _ENTRY._serialized_end = 105
+    _DAY._serialized_start = 107
+    _DAY._serialized_end = 151
+    _CONFIG._serialized_start = 153
+    _CONFIG._serialized_end = 228
+    _DIARY._serialized_start = 230
+    _DIARY._serialized_end = 282
 # @@protoc_insertion_point(module_scope)
