@@ -1,4 +1,5 @@
 import dev_diary.protos.diary_pb2 as diary_pb
+from dev_diary.util import Util
 
 from dev_diary.entry import Entry, Activity
 
@@ -11,6 +12,15 @@ class Day:
 
     def quarter_to_index(hour, quarter, time_string):
         return 0
+
+    @classmethod
+    def create_today(cls):
+        day_dict = {
+            "date": Util.today(),
+            "entries": [],
+        }
+
+        return Day(day_dict)
 
     def line_is_selected_entry(self, hour, quarter, time_string):
         if len(self.entries) == 0:

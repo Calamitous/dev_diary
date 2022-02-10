@@ -38,7 +38,8 @@ def main(stdscr):
             if c == "p":
                 Pop.message("foo bar baz quux")
             if c == "d":
-                Pop.message(diary.debug())
+                filename = diary.dump_debug_file()
+                Pop.message(filename)
             # if c == curses.KEY_RESIZE:
             # Pop.message("RESIZED")
             if c == "?":

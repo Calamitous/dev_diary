@@ -1,2 +1,1 @@
-* Use protobufs instead of JSON
-* Break Diary into Diary -> [Day] -> [Entry]
+* Create debug file as JSON

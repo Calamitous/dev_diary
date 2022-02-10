@@ -1,10 +1,8 @@
 import sys
-import json
 
 from os.path import exists
 from pathlib import Path
 
-from dev_diary.util import Util
 from dev_diary.entry import Entry
 from dev_diary.day import Day
 from dev_diary.config import Config
@@ -24,9 +22,10 @@ class Diary:
 
     @classmethod
     def create_file(self):
-        first_entry = {Util.today(): []}
-        with open(self.FILENAME, "w") as diary_file:
-            diary_file.write(json.dumps(first_entry))
+        fresh_diary = Diary(Config.raw(), [Day.create_today()]).to_pb_str()
+
+        with open(self.FILENAME, "wb") as diary_file:
+            diary_file.write(fresh_diary)
 
     def __init__(self, config, days):
         self.config = config
@@ -34,13 +33,10 @@ class Diary:
         self.selected_day_index = 0
 
     def to_pb(self):
+        days_pb = [day.to_pb() for day in self.days]
+
         diary_pb_data = diary_pb.Diary()
-
         diary_pb_data.config.CopyFrom(Config.c_to_pb())
-
-        days_struct = [{"date": date, "entries": self.days[date]} for date in self.days]
-        days_pb = [Day(day).to_pb() for day in days_struct]
-
         diary_pb_data.days.extend(days_pb)
 
         return diary_pb_data
@@ -69,8 +65,11 @@ class Diary:
         diary.ParseFromString(undump)
         return Diary.from_pb(diary)
 
-    def debug(self):
-        return str(self.selected_day_entries())
+    def dump_debug_file(self):
+        debug_filename = "debug.txt"
+        with open(debug_filename, "w") as diary_file:
+            diary_file.write(str(self))
+        return debug_filename
 
     def entry_dates(self):
         dates = [day.date for day in self.days]
