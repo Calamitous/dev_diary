@@ -6,8 +6,8 @@ enum Activity {
   SOLO         = 2;
   DOWNTIME     = 3;
   ADMINITRIVIA = 4;
-  EMPTY        = 5;
-  OTHER        = 6;
+  OTHER        = 5;
+  EMPTY        = 6;
 }
 
 message Entry {

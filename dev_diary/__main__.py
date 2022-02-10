@@ -14,7 +14,7 @@ def main(stdscr):
         Pop.message("No diary file found, creating...")
         Diary.create_file()
 
-    diary = Diary.load()
+    diary = Diary.read()
 
     SINGLE_COMMANDS = {
         "g": diary.newest_day,

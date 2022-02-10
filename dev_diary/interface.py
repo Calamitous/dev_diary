@@ -134,7 +134,7 @@ class Interface:
     def write_entry_panel(self, diary):
         # TODO: Figure out how to show empty days
 
-        lines = diary.lines()
+        lines = diary.selected_day().lines()
         # 24 hours x 4 15-minute increments
         # max theoretical body height = 24 * 4 + 1
         body_height = len(lines)
@@ -151,8 +151,6 @@ class Interface:
             display_line = self.pad_line(line["text"])
 
             body_pad.move(body_idx, 0)
-            # if display_time == " 10:45 ":
-            # Pop.message("'{}'".format(display_line))
 
             if line["selected"]:
                 body_pad.addstr(

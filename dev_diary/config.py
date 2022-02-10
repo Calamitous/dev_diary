@@ -59,5 +59,5 @@ class Config:
         return cls(config_dict)
 
     def __repr__(self):
-        fmt_str = "Config:\n  file_format_version: {}\n  start_time: {}"
+        fmt_str = "\nConfig:\n  file_format_version: {}\n  start_time: {}"
         return fmt_str.format(self.file_format_version, self.start_time)
