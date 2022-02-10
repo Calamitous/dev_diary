@@ -1,7 +1,7 @@
 import dev_diary.protos.diary_pb2 as diary_pb
-from dev_diary.debug import log
 
 from dev_diary.entry import Entry
+
 
 class Day:
     def __init__(self, day_dict):
@@ -14,11 +14,7 @@ class Day:
         day_pb.date = self.date
 
         entries_pb = [Entry(entry).to_pb() for entry in self.entries]
-        # TODO: START: Figure out why this isn't working
-        log(">>>>>>>>>>>>>>>>>>>>>>>>")
-        log(entries_pb)
-        log("<<<<<<<<<<<<<<<<<<<<<")
-        day_pb.entries.extend(self.entries)
+        day_pb.entries.extend(entries_pb)
 
         return day_pb
 

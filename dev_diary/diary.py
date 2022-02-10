@@ -7,9 +7,11 @@ from pathlib import Path
 from dev_diary.util import Util
 from dev_diary.entry import Entry
 from dev_diary.day import Day
+from dev_diary.config import Config
 
-# from dev_diary.protos.diary import diary_pb
+import dev_diary.protos.diary_pb2 as diary_pb
 
+from dev_diary.debug import log
 
 class Diary:
     if len(sys.argv) >= 2:
@@ -40,14 +42,30 @@ class Diary:
         self.selected_day_index = 0
         self.selected_entry_index = 0
 
-    def write(self):
-        # pb_days = [diary_pb.Day()day for day in self.days]
+    def to_pb(self):
+        diary_pb_data = diary_pb.Diary()
+
+        diary_pb_data.config.CopyFrom(Config().to_pb())
+
         days_struct = [{"date": date, "entries": self.days[date]} for date in self.days]
         days_pb = [Day(day).to_pb() for day in days_struct]
 
-        # entries = [Entry(entry).to_pb() for entry in self.selected_day_entries()]
+        diary_pb_data.days.extend(days_pb)
+
+        return diary_pb_data
+
+    def to_pb_str(self):
+        return self.to_pb().SerializeToString()
+
+    def write(self):
         with open("dump.p", "wb") as dump:
-            dump.write(days_pb[0])
+            dump.write(self.to_pb_str())
+
+    def read(self):
+        undump = open("dump.p", "rb").read()
+        diary = diary_pb.Diary()
+        diary.ParseFromString(undump)
+        return diary
 
     def line_is_entry(self, hour, quarter, time_string, entry):
         if entry is None:

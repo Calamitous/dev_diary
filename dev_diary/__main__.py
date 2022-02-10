@@ -24,6 +24,7 @@ def main(stdscr):
         "J": diary.next_day,
         "j": diary.next_entry,
         "w": diary.write,
+        "r": diary.read,
     }
 
     while True:

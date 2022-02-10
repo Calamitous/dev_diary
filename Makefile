@@ -22,4 +22,4 @@ proto:
 	protoc --python_out=./dev_diary protos/*
 
 logwatch:
-	tail -f out.log
+	rm out.log && touch out.log && reset && tail -f out.log
