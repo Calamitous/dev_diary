@@ -3,10 +3,6 @@ from dev_diary.entry import Activity, ActivityNames, Entry
 import dev_diary.protos.diary_pb2 as diary_pb
 
 
-def test_fail():
-    assert True
-
-
 class TestActivity:
     def test_activity(self):
         assert len(Activity) == 7
