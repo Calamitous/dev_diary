@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+echo "Watching..."
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  # sudo apt install inotify-tools # Ubuntu
+  # sudo pacman -Sy inotify-tools # Arch
+  while inotifywait -r -e modify .; do
+    # clear
+    reset
+    python -m pytest .
+  done
+fi
+
+if [[ "$OSTYPE" == "darwin18.0" ]]; then
+  # brew install entr
+  find . -name "*.py" | entr sh -c 'reset; python -m pytest .'
+fi

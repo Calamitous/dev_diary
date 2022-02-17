@@ -1,11 +1,11 @@
 syntax = "proto3";
 
 enum Activity {
-  MEETING      = 0;
-  PAIRING      = 1;
-  SOLO         = 2;
-  DOWNTIME     = 3;
-  ADMINITRIVIA = 4;
+  ADMINITRIVIA = 0;
+  DOWNTIME     = 1;
+  MEETING      = 2;
+  PAIRING      = 3;
+  SOLO         = 4;
   OTHER        = 5;
   EMPTY        = 6;
 }

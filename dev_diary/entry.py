@@ -1,12 +1,11 @@
 import dev_diary.protos.diary_pb2 as diary_pb
 
-
 Activity = {
-    "meeting": 0,
-    "pairing": 1,
-    "solo": 2,
-    "downtime": 3,
-    "administrivia": 4,
+    "administrivia": 0,
+    "downtime": 1,
+    "meeting": 2,
+    "pairing": 3,
+    "solo": 4,
     "other": 5,
     "empty": 6,
 }
@@ -29,12 +28,16 @@ class Entry:
 
         entry_pb.start = self.start
         entry_pb.duration = self.duration
-        entry_pb.activity = Activity[self.activity]
+        entry_pb.activity = self.activity
         entry_pb.text = self.text
 
         return entry_pb
 
+    def to_pb_str(self):
+        return self.to_pb().SerializeToString()
+
     # TODO: Refactor all this
+    # TODO: Also, this is a terrible name
     def line_is_entry(self, hour, quarter, time_string):
         if time_string == self.start:
             return True
@@ -53,20 +56,22 @@ class Entry:
 
         return entry_start_time <= test_time and entry_end_time >= test_time
 
-    def to_pb_str(self):
-        return self.to_pb().SerializeToString()
+    @classmethod
+    def activity_line(cls, activity_string):
+        return cls("", 0, Activity[activity_string], "")
 
     @classmethod
     def empty(cls):
         return cls.activity_line("empty")
 
     @classmethod
-    def activity_line(cls, activity_string):
-        return cls("", 0, Activity[activity_string], "")
-
-    @classmethod
     def from_pb(cls, entry_pb):
-        return cls(entry_pb.start, entry_pb.duration, entry_pb.activity, entry_pb.text,)
+        return cls(
+            entry_pb.start,
+            entry_pb.duration,
+            entry_pb.activity,
+            entry_pb.text,
+        )
 
     def __repr__(self):
         fmt_str = "\nEntry:\n  start: {}\n  duration: {}\n  activity: {}\n  text: {}"

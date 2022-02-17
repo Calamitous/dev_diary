@@ -13,7 +13,10 @@ build:
 	make format
 
 test:
-	pytest tests
+	python -m pytest .
+
+watch:
+	./bin/test_watch
 
 format:
 	black .
