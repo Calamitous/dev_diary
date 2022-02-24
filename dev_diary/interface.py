@@ -68,6 +68,26 @@ class Pop:
         return win.getkey()
 
 
+class Form:
+    def __init__(self, selected_date, new_record=True):
+        self.date = selected_date
+        self.new_record = new_record
+        # while true:
+
+    def add_form(self, selected_date, new_record=True):
+        form = Form(selected_date, True)
+        return True, {
+            "text": "Foo",
+            "start": "08:00",
+            "duration": 2,
+            "activity": 0,
+            "date": "2022-01-27",
+        }
+
+    def textbox():
+        return "OK"
+
+
 class Interface:
     def __init__(self, stdscr):
         self.stdscr = stdscr
@@ -116,6 +136,12 @@ class Interface:
             list_idx += 1
 
         day_list.noutrefresh(0, 0, 1, 0, curses.LINES - 2, 12)
+
+    def add_entry(self, diary):
+        do_add, data = Form.add_form(diary.selected_day(), True)
+        if do_add:
+            # Validation?  Or push to Form?
+            diary.create_entry(data)
 
     @classmethod
     def pad_line(cls, text):
@@ -181,7 +207,7 @@ class Interface:
     def print_display(self, diary):
         curses.update_lines_cols()
         self.stdscr.clear()
-        # TODO: START: Figure out this refresh nonsense
+        # TODO: Figure out this refresh nonsense
         self.stdscr.refresh()
 
         self.write_header()

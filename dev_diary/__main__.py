@@ -42,6 +42,8 @@ def main(stdscr):
                 Pop.message(filename)
             # if c == curses.KEY_RESIZE:
             # Pop.message("RESIZED")
+            if c == "a":
+                interface.add_entry(diary)
             if c == "?":
                 Pop.message(help_text())
             # if c == curses.KEY_DOWN:

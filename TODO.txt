@@ -1,1 +1,3 @@
 * Create debug file as JSON
+* Add text archiver for items older than 1 year
+* Add reminder for user when it's time to archive

@@ -10,9 +10,6 @@ class Day:
         self.entries = entries
         self.selected_entry_index = 0
 
-    def quarter_to_index(hour, quarter, time_string):
-        return 0
-
     @classmethod
     def create_today(cls):
         return Day(Util.today(), [])
@@ -89,7 +86,7 @@ class Day:
 
         day_pb.date = self.date
 
-        entries_pb = [Entry(entry).to_pb() for entry in self.entries]
+        entries_pb = [entry.to_pb() for entry in self.entries]
         day_pb.entries.extend(entries_pb)
 
         return day_pb

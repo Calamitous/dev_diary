@@ -11,26 +11,44 @@ import dev_diary.protos.diary_pb2 as diary_pb
 
 
 class Diary:
+    """
+    Data Structure:
+    [
+        {
+            "date": "2022-01-14"
+            "start": "09:00",
+            "duration": 3,
+            "text": "Did the thing",
+            "activity": 0,
+        },
+    ]
+    """
+
     if len(sys.argv) >= 2:
         FILENAME = sys.argv[1]
     else:
         FILENAME = "./dev.diary"
 
-    @classmethod
-    def is_file_missing(cls):
-        return not exists(cls.FILENAME)
-
-    @classmethod
-    def create_file(self):
-        fresh_diary = Diary(Config.default(), [Day.create_today()]).to_pb_str()
-
-        with open(self.FILENAME, "wb") as diary_file:
-            diary_file.write(fresh_diary)
-
     def __init__(self, config, days):
         self.config = config
-        self.days = days
+        self.days = sorted(days, key=lambda d: d.date, reverse=True)
         self.selected_day_index = 0
+
+    def create_entry(self, new_entry):
+        day = self.find_day_by_date(new_entry.pop("date"))
+        day.entries.append(
+            Entry(
+                new_entry["start"],
+                new_entry["duration"],
+                new_entry["activity"],
+                new_entry["text"],
+            )
+        )
+        self.write()
+
+    def find_day_by_date(self, date):
+        day = [day for day in self.days if day.date == date][0]
+        return day
 
     def to_pb(self):
         days_pb = [day.to_pb() for day in self.days]
@@ -43,6 +61,17 @@ class Diary:
 
     def to_pb_str(self):
         return self.to_pb().SerializeToString()
+
+    @classmethod
+    def is_file_missing(cls):
+        return not exists(cls.FILENAME)
+
+    @classmethod
+    def create_file(self):
+        fresh_diary = Diary(Config.default(), [Day.create_today()]).to_pb_str()
+
+        with open(self.FILENAME, "wb") as diary_file:
+            diary_file.write(fresh_diary)
 
     @classmethod
     def from_pb(cls, diary_pb):
