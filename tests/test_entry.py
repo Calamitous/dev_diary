@@ -91,3 +91,43 @@ class TestEntry:
         assert entry.duration == 3
         assert entry.activity == Activity["downtime"]
         assert entry.text == "Bar"
+
+    def test_duration_text(self, entry):
+        entry.duration = 1
+        assert entry.duration_text() == "15 minutes"
+        entry.duration = 2
+        assert entry.duration_text() == "30 minutes"
+        entry.duration = 3
+        assert entry.duration_text() == "45 minutes"
+        entry.duration = 4
+        assert entry.duration_text() == "1 hour"
+        entry.duration = 5
+        assert entry.duration_text() == "1 hour 15 minutes"
+        entry.duration = 6
+        assert entry.duration_text() == "1 hour 30 minutes"
+        entry.duration = 7
+        assert entry.duration_text() == "1 hour 45 minutes"
+        entry.duration = 8
+        assert entry.duration_text() == "2 hours"
+        entry.duration = 83
+        assert entry.duration_text() == "20 hours 45 minutes"
+
+    def test_text_display_when_text_empty(self, entry):
+        entry.text = ""
+        assert entry.text_display(10) == "          "
+        assert entry.text_display(0) == ""
+        assert entry.text_display(37) == "                                     "
+
+    def test_text_display_when_text_fits(self, entry):
+        entry.text = "1234567890"
+        assert entry.text_display(10) == "1234567890"
+        assert entry.text_display(0) == ""
+        assert entry.text_display(37) == "1234567890                           "
+
+    def test_text_display_when_text_is_too_long(self, entry):
+        entry.text = "1234567890123456789012345678901234567890"
+        assert entry.text_display(10) == "1234567..."
+        assert entry.text_display(0) == ""
+        assert entry.text_display(37) == "1234567890123456789012345678901234..."
+
+    # def test_new_entry(self):

@@ -1,4 +1,5 @@
 import curses
+import os
 import sys
 
 from dev_diary.diary import Diary
@@ -23,6 +24,8 @@ def main(stdscr):
         "k": diary.previous_entry,
         "J": diary.next_day,
         "j": diary.next_entry,
+        "	": diary.next_entry,
+        curses.KEY_BTAB: diary.next_entry,
         "w": diary.write,
         "r": diary.read,
     }
@@ -43,7 +46,7 @@ def main(stdscr):
             # if c == curses.KEY_RESIZE:
             # Pop.message("RESIZED")
             if c == "a":
-                interface.add_entry(diary)
+                interface.add_entry(stdscr, diary)
             if c == "?":
                 Pop.message(help_text())
             # if c == curses.KEY_DOWN:
@@ -57,4 +60,7 @@ def main(stdscr):
 
 
 if __name__ == "__main__":
+    # Eliminate long delay when pressing Esc (1000ms to 25ms)
+    os.environ.setdefault("ESCDELAY", "25")
+
     sys.exit(curses.wrapper(main))

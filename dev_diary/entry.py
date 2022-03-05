@@ -1,4 +1,6 @@
 import dev_diary.protos.diary_pb2 as diary_pb
+from math import floor
+
 
 Activity = {
     "administrivia": 0,
@@ -20,8 +22,44 @@ class Entry:
         self.activity = activity
         self.text = text
 
+    @classmethod
+    def new_entry(cls):
+        # TODO: Set start time to default start time
+        return cls("09:00", 2, 0, "")
+
     def activity_name(self):
         return ActivityNames[self.activity]
+
+    def duration_text(self):
+        hours = floor(self.duration / 4)
+
+        subs = self.duration % 4
+        minutes = subs * 15
+
+        if minutes > 0:
+            minutes_text = "{} minutes".format(str(minutes))
+        else:
+            minutes_text = ""
+
+        if hours > 0:
+            if hours == 1:
+                hours_text = "{} hour".format(str(hours))
+            else:
+                hours_text = "{} hours".format(str(hours))
+        else:
+            hours_text = ""
+
+        return " ".join([hours_text, minutes_text]).strip()
+
+    def text_display(self, width):
+        padding = " " * width
+
+        if len(self.text) > width:
+            text = self.text[: width - 3] + "..."
+        else:
+            text = self.text
+
+        return (text + padding)[:width]
 
     def to_pb(self):
         entry_pb = diary_pb.Entry()
